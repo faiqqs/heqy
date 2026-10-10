@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Beranda</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <style>
+/* =====================================
+   ANIMASI KHUSUS TOMBOL SYAIR LAGU
+   ===================================== */
+
+/* Animasi naik-turun */
+@keyframes syairMelompat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Tombol Syair Lagu */
+table tr:nth-child(2) a[href*="syair-lagu"] {
+    animation: syairMelompat 2s ease-in-out infinite;
+
+    border-color: #00a6a6;
+
+    box-shadow:
+        0 4px 12px rgba(0, 139, 139, 0.25);
+
+    position: relative;
+}
+
+/* Ketika diarahkan kursor */
+table tr:nth-child(2) a[href*="syair-lagu"]:hover {
+    animation-play-state: paused;
+
+    transform: translateY(-5px) scale(1.05);
+
+    box-shadow:
+        0 8px 20px rgba(0, 102, 255, 0.35);
+}
+
+/* Menghormati pengaturan pengurangan animasi */
+@media (prefers-reduced-motion: reduce) {
+    table tr:nth-child(2) a[href*="syair-lagu"] {
+        animation: none;
+    }
+}
+/* ==================================================
+   WEBSITE FAIQ - FINAL DESIGN
+   ================================================== */
+
+
+/* ==================================================
+   LATAR BELAKANG
+   ================================================== */
+
+html {
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 35px 0;
+    background: transparent;
+    position: relative;
+}
+
+
+/* Membuat efek blur khusus pada background */
+
+html::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: -35px;
+
+    background-image:
+        url("images/langit.gereja.cisadane.png");
+
+    background-size: cover;
+
+    background-position: center center;
+
+    filter: blur(12px);
+
+    transform: scale(1.08);
+
+    z-index: -2;
+}
+
+
+/* Lapisan gelap agar website lebih mudah dibaca */
+
+html::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8, 35, 55, 0.28),
+            rgba(20, 70, 75, 0.18)
+        );
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+
+/* ==================================================
+   TABEL / KARTU UTAMA
+   ================================================== */
+
+table {
+    width: min(800px, calc(100% - 32px));
+    margin: 0 auto;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    overflow: hidden;
+
+    background: white;
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.35),
+        0 0 25px rgba(0, 255, 255, 0.12);
+
+    position: relative;
+    z-index: 2;
+}
+
+
+/* ==================================================
+   HEADER
+   ================================================== */
+
+table tr:first-child td {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 106, 111, 0.89),
+            rgba(0, 55, 70, 0.66)
+        ),
+        url("../images/DSC06297 (1).jpg")
+        center/cover no-repeat !important;
+
+    padding: 49px;
+
+    border-bottom: 3px solid #8ff7f0;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+/* Efek cahaya di header */
+
+table tr:first-child td::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    right: -80px;
+    top: -120px;
+
+    background: rgba(255,255,255,0.10);
+
+    border-radius: 50%;
+
+    filter: blur(10px);
+}
+
+
+/* Judul */
+
+h1 {
+
+    font-family: "Trebuchet MS", Arial, sans-serif;
+
+    font-size: 40px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    margin: 15px 0;
+
+    color: white;
+
+    text-shadow:
+        0 2px 4px rgba(0,0,0,0.85),
+        0 0 8px rgba(0,0,0,0.55),
+        0 0 18px rgba(143,247,240,0.25);
+
+    position: relative;
+
+    z-index: 2;
+}
+/* Slogan */
+
+table tr:first-child em {
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    opacity: 1;
+
+    text-shadow:
+        0 2px 4px rgba(0,0,0,0.85),
+        0 0 8px rgba(0,0,0,0.55);
+
+    position: relative;
+
+    z-index: 2;
+}
+table tr:first-child td > font > p em {
+
+    background: rgba(0, 40, 50, 0.20);
+
+    padding: 5px 12px;
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(3px);
+}
+
+/* ==================================================
+   FOTO DI HEADER
+   ================================================== */
+
+/*
+   Kalau nanti kamu punya foto pribadi,
+   ganti nama file di bawah.
+
+   Contoh:
+   images/foto-faiq.jpg
+*/
+
+h1::before {
+    content: "";
+
+    display: block;
+
+    width: 102px;
+    height: 101px;
+
+    margin: 0 auto 16px;
+
+    border-radius: 50%;
+
+    background-image: url("images/iqqs%20profile.png");
+
+    background-size: cover;
+    background-position: center;
+
+    border: 4px solid white;
+
+    box-shadow:
+        0 0 0 5px rgba(143,247,240,0.35),
+        0 0 0 10px rgba(255,255,255,0.10),
+        0 8px 20px rgba(0,0,0,0.35);
+
+    position: relative;
+    z-index: 3;
+}
+
+
+/* ==================================================
+   MENU NAVIGASI
+   ================================================== */
+
+table tr:nth-child(2) td {
+
+    background:
+        linear-gradient(
+            90deg,
+            #dffcff,
+            #b8eeee,
+            #dffcff
+        ) !important;
+
+    padding: 14px;
+
+    text-align: center;
+
+    border-bottom: 2px solid #72d9d5;
+}
+
+/* Tombol menu */
+
+table tr:nth-child(2) a {
+
+    display: inline-block;
+
+    padding: 10px 20px;
+
+    margin: 3px 5px;
+
+    background: rgba(255,255,255,0.95);
+
+    color: #006f73;
+
+    border: 1px solid #8bd6d2;
+
+    border-radius: 25px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.15);
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Hover menu */
+
+table tr:nth-child(2) a:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #009c9c,
+            #007477
+        );
+
+    color: white;
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,0.25);
+}
+
+
+/* ==================================================
+   KONTEN ARTIKEL
+   ================================================== */
+
+table tr:nth-child(3) td:first-child {
+    background: rgba(255, 255, 255, 0.97) !important;
+    padding: 26px;
+    vertical-align: top;
+}
+
+table tr:nth-child(3) td:first-child h3 {
+    transition: color 0.25s ease, padding-left 0.25s ease;
+}
+
+table tr:nth-child(3) td:first-child h3:hover {
+    color: #009c9c;
+    padding-left: 16px;
+}
+
+/* Judul artikel */
+
+h3 {
+    color: #007477;
+
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    margin-top: 5px;
+
+    margin-bottom: 12px;
+
+    padding-left: 12px;
+
+    border-left: 4px solid #00a6a6;
+
+    transition: color 0.25s ease;
+}
+
+
+/* Hover judul */
+
+h3:hover {
+    color: #009c9c;
+}
+
+
+/* Paragraf */
+
+p {
+
+    line-height: 1.6;
+
+}
+
+
+/* ==================================================
+   TANGGAL
+   ================================================== */
+
+table tr:nth-child(3) td:first-child p {
+    color: #263238;
+
+    line-height: 1.7;
+
+    font-size: 15px;
+}
+
+
+/* ==================================================
+   GARIS PEMISAH
+   ================================================== */
+
+hr {
+
+    border: none;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            #008b8b,
+            #f3a9c2,
+            transparent
+        );
+
+    margin: 28px 0;
+}
+
+
+/* ==================================================
+   TOMBOL SELANJUTNYA
+   ================================================== */
+
+table tr:nth-child(3)
+td:first-child a {
+
+    display: inline-block;
+
+    background:
+        linear-gradient(
+            135deg,
+            #009c9c,
+            #007474
+        );
+
+    color: white;
+
+    padding: 9px 17px;
+
+    border-radius: 20px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 4px 9px rgba(0,0,0,0.22);
+
+    transition:
+        all 0.25s ease;
+}
+
+
+/* Hover tombol */
+
+table tr:nth-child(3)
+td:first-child a:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #00b8b8,
+            #007477
+        );
+
+    color: white;
+
+    transform: translateX(6px);
+
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.28);
+}
+
+
+/* ==================================================
+   SIDEBAR
+   ================================================== */
+
+table tr:nth-child(3) td:last-child {
+
+    background:
+        linear-gradient(
+            180deg,
+            #eefafa,
+            #dcefee
+        ) !important;
+
+    padding: 20px;
+
+    vertical-align: top;
+
+    border-left: 2px solid #a9deda;
+}
+
+
+/* Judul sidebar */
+
+table tr:nth-child(3)
+td:last-child p {
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color: #333;
+
+    border-bottom: 2px solid #008b8b;
+
+    padding-bottom: 8px;
+}
+
+
+/* ==================================================
+   TAUTAN EKSTERNAL
+   ================================================== */
+
+table tr:nth-child(3)
+td:last-child ol {
+
+    padding-left: 25px;
+}
+
+
+table tr:nth-child(3)
+td:last-child li {
+
+    margin: 12px 0;
+}
+
+
+/* Tombol external */
+
+table tr:nth-child(3)
+td:last-child a {
+
+    display: block;
+
+    padding: 9px 11px;
+
+    background: white;
+
+    color: #007477;
+
+    border: 1px solid #bbb;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 3px 7px rgba(0,0,0,0.15);
+
+    transition:
+        all 0.25s ease;
+}
+
+
+/* Hover external */
+
+table tr:nth-child(3)
+td:last-child a:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #008b8b,
+            #006b73
+        );
+
+    color: white;
+
+    transform:
+        translateX(6px)
+        scale(1.02);
+
+    box-shadow:
+        0 6px 12px rgba(0,0,0,0.25);
+}
+
+
+/* ==================================================
+   FOOTER
+   ================================================== */
+
+table tr:last-child td {
+    background:
+        linear-gradient(
+            90deg,
+            #164b52,
+            #0d6970,
+            #164b52
+        ) !important;
+
+    color: white;
+    padding: 14px;
+
+    border-top: 3px solid #8ff7f0;
+}
+
+/* ==================================================
+   ANIMASI EMOJI
+   ================================================== */
+
+body::before,
+body::after,
+table::before,
+table::after {
+
+    position: fixed;
+
+    top: -60px;
+
+    z-index: 20;
+
+    pointer-events: none;
+
+    animation:
+        emojiJatuh
+        linear
+        infinite;
+}
+
+
+/* ✨ */
+
+body::before {
+
+    content: "✨";
+
+    left: 8%;
+
+    font-size: 20px;
+
+    animation-duration: 7s;
+
+    animation-delay: 1s;
+}
+
+
+/* 🌸 */
+
+body::after {
+
+    content: "⚡";
+
+    left: 23%;
+
+    font-size: 23px;
+
+    animation-duration: 10s;
+
+    animation-delay: 4s;
+}
+
+
+/* ⭐ */
+
+table::before {
+
+    content: "⭐";
+
+    left: 65%;
+
+    font-size: 22px;
+
+    animation-duration: 8s;
+
+    animation-delay: 2s;
+}
+
+
+/* 💫 */
+
+table::after {
+
+    content: "💫";
+
+    left: 88%;
+
+    font-size: 20px;
+
+    animation-duration: 11s;
+
+    animation-delay: 5s;
+}
+
+
+/* Gerakan emoji */
+
+@keyframes emojiJatuh {
+
+    0% {
+
+        transform:
+            translateY(-60px)
+            rotate(0deg);
+
+        opacity: 0;
+    }
+
+    10% {
+
+        opacity: 1;
+    }
+
+    50% {
+
+        transform:
+            translateY(50vh)
+            rotate(180deg);
+
+        opacity: 0.9;
+    }
+
+    80% {
+
+        opacity: 0.7;
+    }
+
+    100% {
+
+        transform:
+            translateY(110vh)
+            rotate(360deg);
+
+        opacity: 0;
+    }
+}
+    </style>
+</head>
+
+<body bgcolor="darkgrey" background="images/langit.gereja.cisadane.png">
+    <!-- Halaman web tanpa CSS. Murni hanya memakai HTML -->
+    <p>&nbsp;</p>
+    <table border="1" width="800px" cellpadding="12px" align="center" bgcolor="white">
+        <tr>
+            <td colspan="2" align="center" bgcolor="teal" background="../images/hero-teal2.svg">
+                <font color="white">
+                    <p>&nbsp;</p>
+                    <h1>Website Faiq</h1>
+                    <p><em>Masalah tidak akan menjadi masalah jika tidak dipermasalahkan.</em></p>
+                    <p>&nbsp;</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a href="../index.html">Beranda</a>
+                <a href="../tentang-saya.html">Tentang Saya</a>
+                <a href="../sekolahku.html">Sekolahku</a>
+                <a href="../syair-lagu.html">Syair Lagu</a>     
+            </td>
+        </tr>
+        <tr>
+            <td width="75%">
+                <!-- Content utama -->
+
+                <h3>Pemkot Tangerang Gelar Lomba Video Kreatif 2026, Hadiah Puluhan Juta</h3>
+                <p align="right"><small><em>Senin, 14 September 2026</em></small></p>
+                <p>Pemerintah Kota Tangerang kembali menggelar Lomba Video Kreatif Kota Tangerang 2026 sebagai wadah ekspresi dan ide kreatif bagi generasi muda. Mengusung tema "Muda, Berkarya, Berdampak", ajang ini mengajak para pemuda untuk menampilkan potensi dan pesona daerah melalui karya sinematografi yang menginspirasi.</p>
+                <p><a href="berita/berita-1.html">Selanjutnya</a></p>
+
+                <hr>
+
+                <h3>Peringatan Maulid Nabi SAW di SMKN 1 Tangerang</h3>
+                <p align="right"><small><em>Jumat, 4 September 2026</em></small></p>
+                <p>Dalam rangka meneladani akhlak mulia Rasulullah SAW, keluarga besar sekolah menggelar peringatan Maulid Nabi Muhammad SAW yang berlangsung secara khidmat di aula sekolah. Acara ini diikuti oleh seluruh siswa, guru, serta staf sekolah dengan penuh antusias.</p>
+                <p><a href="berita/berita-2.html">Selanjutnya</a></p>
+
+                <!-- Akhir dari content utama -->
+            </td>
+            <td width="25%" valign="top" bgcolor="lightgrey">
+                <p>Tautan eksternal</p>
+                <ol>
+                    <li><a href="https://www.instagram.com/faiqqs_31/">Website Faiq</a></li>
+                    <li><a href="https://github.com/faiqqs/faiqqs.github.io"> Github nya iqqs</a></li>
+                    <li><a href="https://wikipedia.org">Wikipedia</a></li>
+                    <li><a href="https://w3schools.com">W3Schools</a></li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right" bgcolor="black">
+                <font color="white"><small>&copy; Copyright Faiq Yassar Emhas, 2026.</small></font>
+            </td>
+        </tr>
+    </table>
+    <p>&nbsp;</p>
+    <script src="js/music-player.js"></script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemutar Musik</title>
+</head>
+<body>
+<script>
+(() => {
+    const audio = new Audio();
+    audio.preload = "auto";
+    audio.volume = 0;
+
+    const tracks = {
+        normal: {
+            src: "musik/to-my-youth.mp3",
+            start: 85,
+            end: 115
+        },
+        syair: {
+            src: "musik/1000x-ghea.mp3",
+            start: 80,
+            end: 178
+        }
+    };
+
+    let activeTrack = "";
+    let fadeTimer = null;
+    let started = false;
+    let lastSavedTime = 0;
+
+    function fadeTo(target, duration, callback) {
+        clearInterval(fadeTimer);
+
+        const initial = audio.volume;
+        const steps = 20;
+        let step = 0;
+
+        fadeTimer = setInterval(() => {
+            step++;
+
+            audio.volume = Math.max(
+                0,
+                Math.min(1, initial + (target - initial) * step / steps)
+            );
+
+            if (step >= steps) {
+                clearInterval(fadeTimer);
+                fadeTimer = null;
+                audio.volume = target;
+
+                if (callback) callback();
+            }
+        }, duration * 1000 / steps);
+    }
+
+    function sendState() {
+        if (window.parent !== window) {
+            window.parent.postMessage({
+                type: "MUSIC_STATE",
+                playing: !audio.paused,
+                track: activeTrack,
+                time: audio.currentTime
+            }, window.location.origin);
+        }
+    }
+
+    function saveState() {
+        if (!activeTrack) return;
+
+        try {
+            sessionStorage.setItem("siteMusicTrack", activeTrack);
+            sessionStorage.setItem(
+                "siteMusicTime",
+                String(audio.currentTime)
+            );
+            sessionStorage.setItem(
+                "siteMusicStarted",
+                String(started)
+            );
+        } catch (error) {
+            console.log("Posisi musik tidak dapat disimpan.");
+        }
+    }
+
+    function loadTrack(name, position, shouldPlay) {
+        const track = tracks[name];
+        if (!track) return;
+
+        clearInterval(fadeTimer);
+        fadeTimer = null;
+
+        audio.pause();
+        activeTrack = name;
+        audio.src = track.src;
+        audio.load();
+
+        audio.addEventListener("loadedmetadata", function ready() {
+            audio.removeEventListener("loadedmetadata", ready);
+
+            audio.currentTime = Math.max(
+                track.start,
+                Math.min(position, track.end)
+            );
+
+            if (shouldPlay && audio.currentTime < track.end) {
+                audio.volume = 0;
+
+                audio.play().then(() => {
+                    started = true;
+                    fadeTo(0.7, 1);
+                    sendState();
+                }).catch(() => {
+                    started = false;
+                    sendState();
+                });
+            } else {
+                started = false;
+                audio.volume = 0;
+                sendState();
+            }
+        });
+    }
+
+    function selectTrack(name) {
+        if (!tracks[name] || activeTrack === name) return;
+
+        const shouldPlay = started && !audio.paused;
+        const track = tracks[name];
+
+        fadeTo(0, 0.7, () => {
+            loadTrack(name, track.start, shouldPlay);
+        });
+    }
+
+    function startMusic() {
+        if (!activeTrack) {
+            loadTrack("normal", tracks.normal.start, true);
+            return;
+        }
+
+        if (audio.paused) {
+            const track = tracks[activeTrack];
+
+            if (audio.currentTime >= track.end) {
+                audio.currentTime = track.start;
+            }
+
+            audio.volume = 0;
+
+            audio.play().then(() => {
+                started = true;
+                fadeTo(0.7, 1);
+                sendState();
+            }).catch(sendState);
+        } else {
+            fadeTo(0, 0.7, () => {
+                audio.pause();
+                sendState();
+            });
+        }
+    }
+
+    window.addEventListener("message", event => {
+        if (event.origin !== window.location.origin) return;
+
+        const data = event.data;
+        if (!data || typeof data !== "object") return;
+
+        if (data.type === "MUSIC_PLAY") {
+            startMusic();
+        }
+
+        if (data.type === "MUSIC_TRACK") {
+            selectTrack(data.track);
+        }
+
+        if (data.type === "MUSIC_SAVE_STATE") {
+            saveState();
+        }
+    });
+
+    audio.addEventListener("timeupdate", () => {
+        const track = tracks[activeTrack];
+        if (!track || !started) return;
+
+        if (audio.currentTime - lastSavedTime >= 1) {
+            lastSavedTime = audio.currentTime;
+            saveState();
+        }
+
+        if (audio.currentTime >= track.end - 2 && !fadeTimer) {
+            fadeTo(0, 2, () => {
+                audio.pause();
+                audio.currentTime = track.end;
+                started = false;
+                saveState();
+                sendState();
+            });
+        }
+    });
+
+    audio.addEventListener("pause", sendState);
+    audio.addEventListener("play", sendState);
+
+    // Pulihkan lagu dan posisi yang terakhir disimpan.
+    try {
+        const savedTrack = sessionStorage.getItem("siteMusicTrack");
+        const savedTime = Number(
+            sessionStorage.getItem("siteMusicTime")
+        );
+
+        if (savedTrack && tracks[savedTrack]) {
+            activeTrack = savedTrack;
+            audio.src = tracks[savedTrack].src;
+            audio.load();
+
+            audio.addEventListener("loadedmetadata", function restore() {
+                audio.removeEventListener("loadedmetadata", restore);
+
+                const track = tracks[savedTrack];
+
+                audio.currentTime = Math.max(
+                    track.start,
+                    Math.min(
+                        Number.isFinite(savedTime) ? savedTime : track.start,
+                        track.end
+                    )
+                );
+
+                audio.volume = 0;
+                sendState();
+            });
+        }
+    } catch (error) {
+        console.log("Posisi musik sebelumnya tidak dapat dipulihkan.");
+    }
+})();
+</script>
+</body>
+</html>
