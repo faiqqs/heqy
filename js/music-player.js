@@ -104,25 +104,29 @@
 
     document.head.appendChild(animationStyle);
 
-    // Memasukkan tombol ke barisan navigasi.
-    const navCell = document.querySelector(
-        "table tr:nth-child(2) td"
-    );
+// Cari baris navigasi yang berisi tombol halaman.
+const navLinks = [...document.querySelectorAll("a")].find(link =>
+    link.textContent.trim().toLowerCase() === "syair lagu"
+);
 
-    if (navCell) {
-        // Jika navigasi ditemukan, tombol berada di baris navigasi.
-        navCell.appendChild(button);
-    } else {
-        // Jika tidak ada navigasi yang ditemukan,
-        // tombol tetap bisa diakses di pojok bawah.
-        button.style.position = "fixed";
-        button.style.right = "16px";
-        button.style.bottom = "16px";
-        button.style.zIndex = "9999";
+if (navLinks) {
+    const navContainer = navLinks.parentElement;
 
-        document.body.appendChild(button);
-    }
+    // Masukkan tombol musik tepat setelah tombol Syair Lagu.
+    navLinks.insertAdjacentElement("afterend", button);
 
+    button.style.position = "static";
+    button.style.display = "inline-block";
+    button.style.margin = "3px 5px";
+} else {
+    // Jika navigasi tidak ditemukan, gunakan posisi cadangan.
+    button.style.position = "fixed";
+    button.style.right = "16px";
+    button.style.bottom = "16px";
+    button.style.zIndex = "9999";
+
+    document.body.appendChild(button);
+}
     let playing = false;
 
     // Mengirim perintah kepada pemutar musik.
